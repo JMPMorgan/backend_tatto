@@ -23,7 +23,7 @@ const UserSchema = Schema({
     type: String,
     required: true,
     default: "USER",
-    enum: ["ADMIN", "ARTIST"],
+    enum: ["ADMIN", "ARTIST", "USER"],
   },
   status: {
     type: Boolean,

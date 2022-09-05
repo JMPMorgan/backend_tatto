@@ -1,6 +1,8 @@
 const getUser = (req, res) => {
+  const { id } = req.params;
   res.json({
     msg: "Get User",
+    id,
   });
 };
 
@@ -12,6 +14,7 @@ const getUsers = (req, res) => {
 const postUser = (req, res) => {
   res.json({
     msg: "Post User",
+    params: req.body,
   });
 };
 const updateUser = (req, res) => {
