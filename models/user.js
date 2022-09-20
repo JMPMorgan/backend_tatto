@@ -1,9 +1,13 @@
-const { Schema, model } = require("moongose");
+const { Schema, model } = require("mongoose");
 
 const UserSchema = Schema({
   name: {
     type: String,
     required: [true, "Name is Required"],
+  },
+  lastname: {
+    type: String,
+    required: [true, "Lastname is Required"],
   },
   email: {
     type: String,
@@ -32,6 +36,14 @@ const UserSchema = Schema({
   google: {
     type: Boolean,
     default: false,
+  },
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+  },
+  birthday: {
+    type: Date,
+    required: [true, "Birthday is required"],
   },
 });
 
