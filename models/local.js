@@ -23,6 +23,10 @@ const LocalSchema = Schema({
     required: true,
     default: true,
   },
+  location: {
+    type: String,
+    required: [true, "Location is required"],
+  },
   img: {
     type: String,
     required: [true, "Image is required"],

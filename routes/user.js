@@ -7,6 +7,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/user");
+const { exitsUserPerID } = require("../helpers/db_validators");
 const { inputValidation } = require("../middlewares/validateinput");
 
 const router = new Router();
@@ -29,7 +30,23 @@ router.post(
   ],
   postUser
 );
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.put(
+  "/:id",
+  [
+    check("id", "Invalid ID").isMongoId(),
+    check("id").custom(exitsUserPerID),
+    inputValidation,
+  ],
+  updateUser
+);
+router.delete(
+  "/:id",
+  [
+    check("id", "Invalid ID").isMongoId(),
+    check("id").custom(exitsUserPerID),
+    inputValidation,
+  ],
+  deleteUser
+);
 
 module.exports = router;
