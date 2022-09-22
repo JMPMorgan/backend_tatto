@@ -26,6 +26,10 @@ const MessageSchema = Schema({
     ref: "Conversation",
     required: true,
   },
+  message: {
+    type: String,
+    required: [true, "Message Cant be empty"],
+  },
 });
 
 module.exports = model("Message", MessageSchema);

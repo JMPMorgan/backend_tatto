@@ -1,7 +1,17 @@
 const Cathegory = require("../models/cathegory");
+const CathegoryLocal = require("../models/cathegory_local");
 
 const getCathegory = async (req, res) => {
-  const { id } = req.params;
+  const { id, locals } = req.params;
+  if (locals) {
+    //This Works for search the relationship with the local
+    const cathegory = await Cathegory.findById(id);
+    const locals = await CathegoryLocal.findById(id).populate("Local");
+    return res.json({
+      cathegory,
+      locals,
+    });
+  }
   const cathegory = await Cathegory.findById(id);
   res.json({
     cathegory,
