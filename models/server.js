@@ -11,6 +11,8 @@ class Server {
     this.POSTS_PATH = "/api/posts";
     this.LOCAL_PATH = "/api/posts";
     this.CATHEGORY_PATH = "/api/cathegory";
+    this.CATHEGORY_LOCAL_PATH = "/api/cathegory_local";
+    this.MESSAGE_PATH = "/api/message";
     this.connectDB();
     this.middlewares();
     this.routes();
@@ -32,6 +34,11 @@ class Server {
     this.app.use(this.POSTS_PATH, require("../routes/posts"));
     this.app.use(this.LOCAL_PATH, require("../routes/local"));
     this.app.use(this.CATHEGORY_PATH, require("../routes/cathegory"));
+    this.app.use(
+      this.CATHEGORY_LOCAL_PATH,
+      require("../routes/cathegory_local")
+    );
+    this.app.use(this.MESSAGE_PATH, require("../routes/message"));
   }
 
   startServer() {
