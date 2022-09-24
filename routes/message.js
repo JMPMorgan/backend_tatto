@@ -6,6 +6,6 @@ const { inputValidation } = require("../middlewares/validateinput");
 const router = new Router();
 
 router.get("/:id", [inputValidation], getConversation);
-router.post("/:id", [inputValidation], postMessage);
+router.post("/", [inputValidation], postMessage);
 
 module.exports = router;

@@ -26,14 +26,15 @@ const getCathegories = async (req, res) => {
 };
 const postCathegory = async (req, res) => {
   const { name } = req.body;
-  const exitsCathegory = await Cathegory.find({ name });
-  if (exitsCathegory) {
+  const exitsCathegory = await Cathegory.findOne({ name });
+  console.log(exitsCathegory);
+  if (exitsCathegory !== null) {
     return res.status(400).json({
       msg: `Cathegory ${name} already exits`,
     });
   }
 
-  const cathegory = new Cathegory(name);
+  const cathegory = new Cathegory({ name });
   await cathegory.save();
   res.json({
     cathegory,
@@ -68,8 +69,9 @@ const updateCathegory = async (req, res) => {
     });
   }
 
-  const exitsCathegory = await Cathegory.find({ name });
-  if (exitsCathegory) {
+  const exitsCathegory = await Cathegory.findOne({ name });
+  console.log(exitsCathegory);
+  if (exitsCathegory !== null) {
     return res.status(400).json({
       msg: `Cathegory ${name} already exits`,
     });

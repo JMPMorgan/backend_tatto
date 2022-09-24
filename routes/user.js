@@ -7,7 +7,11 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/user");
-const { exitsUserPerID } = require("../helpers/db_validators");
+const {
+  exitsUserPerID,
+  emailExist,
+  userExist,
+} = require("../helpers/db_validators");
 const { inputValidation } = require("../middlewares/validateinput");
 
 const router = new Router();
@@ -18,9 +22,11 @@ router.post(
   "/",
   [
     check("email", "Incorrect format in email").isEmail(),
+    check("email").custom(emailExist),
     check("name", "Name is required").not().isEmpty(),
     check("lastname", "lastname is required").not().isEmpty(),
     check("username", "Username is required").not().isEmpty(),
+    check("username").custom(userExist),
     check(
       "password",
       "Password is required and the characters must be more than 6"

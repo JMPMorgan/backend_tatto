@@ -21,7 +21,7 @@ const MessageSchema = Schema({
     ref: "User",
     required: true,
   },
-  converstaion: {
+  conversation: {
     type: Schema.Types.ObjectId,
     ref: "Conversation",
     required: true,

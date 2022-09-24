@@ -8,8 +8,20 @@ const { inputValidation } = require("../middlewares/validateinput");
 
 const router = new Router();
 
-router.post("/", [inputValidation], postRelationship);
+router.post(
+  "/",
+  [
+    check("id_cathegory").isMongoId(),
+    check("id_local").isMongoId(),
+    inputValidation,
+  ],
+  postRelationship
+);
 
-router.delete("/:id", [inputValidation], deleteRelationship);
+router.delete(
+  "/:id",
+  [check("id").isMongoId(), inputValidation],
+  deleteRelationship
+);
 
 module.exports = router;

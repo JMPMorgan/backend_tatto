@@ -12,11 +12,23 @@ const router = new Router();
 router.get("/", getCathegories);
 router.get(
   "/:id",
-  [check("id", "Invalid ID").isMongoId, inputValidation],
+  [check("id", "Invalid ID").isMongoId(), inputValidation],
   getCathegory
 );
 
-router.post("/", [inputValidation], postCathegory);
-router.delete("/:id", [inputValidation], deleteCathegory);
-router.put("/:id", [inputValidation], updateCathegory);
+router.post(
+  "/",
+  [check("name", "Name is required").not().isEmpty(), inputValidation],
+  postCathegory
+);
+router.delete(
+  "/:id",
+  [check("id", "Invalid ID").isMongoId(), inputValidation],
+  deleteCathegory
+);
+router.put(
+  "/:id",
+  [check("id", "Invalid ID").isMongoId(), inputValidation],
+  updateCathegory
+);
 module.exports = router;

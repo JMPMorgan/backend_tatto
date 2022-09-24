@@ -4,6 +4,7 @@ const PostsSchema = Schema({
   status: {
     type: Boolean,
     required: true,
+    default: true,
   },
   creation_date: {
     type: Date,

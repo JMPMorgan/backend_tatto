@@ -18,7 +18,7 @@ const getPosts = async (req, res) => {
 const postPosts = async (req, res) => {
   const { user, description, local } = req.body;
   //TODO : Only need implementation cloudinary
-  const img = "";
+  const img = "img";
   const post = new Posts({ user, description, local, img });
   await post.save();
   res.json({

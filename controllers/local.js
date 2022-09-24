@@ -17,28 +17,48 @@ const getLocal = async (req, res) => {
 };
 
 const postLocal = async (req, res) => {
-  const { name, schedule, weekdays, user, location } = req.body;
-  const query = { name, location };
-  const exitsLocal = await Local.findOne(query);
-  if (exitsLocal) {
-    return res.status(400).json({
-      msg: `Local ${Local} already exits`,
+  try {
+    const { name, schedule, weekdays, user, location } = req.body;
+    const query = { name: name, location: location };
+    console.log(query);
+    //TODO:Pasarlo a un middleware
+    /*
+    const exitsLocal = await Local.find({
+      location: location,
+      $and: [{ name: name }],
     });
-  }
+    console.log(exitsLocal);
+    if (exitsLocal) {
+      return res.status(400).json({
+        msg: `Local ${Local} already exits`,
+      });
+    }
 
-  const exitsUser = await Local.findOne(user);
-  if (exitsUser) {
-    return res.status(400).json({
-      msg: `This user has registered a local`,
+    */
+
+    console.log("Hola");
+
+    const exitsUser = await Local.findById(user).populate("user");
+    if (exitsUser) {
+      return res.status(400).json({
+        msg: `This user has registered a local`,
+      });
+    }
+    // TODO: Need Cloudinary Implementation
+    const img = "img";
+    console.log("Todo chilo");
+    const local = new Local({ name, schedule, weekdays, user, location, img });
+    console.log(local);
+    await local.save();
+    return res.json({
+      msg: "Local Created",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server Error",
     });
   }
-  // TODO: Need Cloudinary Implementation
-  const img = "img";
-  const local = new Local({ name, schedule, weekdays, user, location, img });
-  await local.save();
-  res.json({
-    msg: "Local Created",
-  });
 };
 
 const updateLocal = async (req, res) => {
@@ -61,7 +81,7 @@ const deleteLocal = async (req, res) => {
     { new: true }
   );
   res.json({
-    olddata: local,
+    olddata: localDelete,
     msg: "Local Deleted",
   });
 };

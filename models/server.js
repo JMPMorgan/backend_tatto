@@ -9,7 +9,7 @@ class Server {
     this.USER_PATH = "/api/user";
     this.AUTH_PATH = "/api/auth";
     this.POSTS_PATH = "/api/posts";
-    this.LOCAL_PATH = "/api/posts";
+    this.LOCAL_PATH = "/api/local";
     this.CATHEGORY_PATH = "/api/cathegory";
     this.CATHEGORY_LOCAL_PATH = "/api/cathegory_local";
     this.MESSAGE_PATH = "/api/message";
