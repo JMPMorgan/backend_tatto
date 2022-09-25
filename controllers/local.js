@@ -22,22 +22,16 @@ const postLocal = async (req, res) => {
     const query = { name: name, location: location };
     console.log(query);
     //TODO:Pasarlo a un middleware
-    /*
+
     const exitsLocal = await Local.find({
       location: location,
-      $and: [{ name: name }],
+      name: name,
     });
-    console.log(exitsLocal);
     if (exitsLocal) {
       return res.status(400).json({
-        msg: `Local ${Local} already exits`,
+        msg: `Local ${name} already exits`,
       });
     }
-
-    */
-
-    console.log("Hola");
-
     const exitsUser = await Local.findById(user).populate("user");
     if (exitsUser) {
       return res.status(400).json({
