@@ -5,10 +5,7 @@ const getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    res.json({
-      msg: "Get User",
-      user,
-    });
+    res.json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -21,10 +18,7 @@ const getUsers = async (req, res) => {
   try {
     const query = { status: true };
     const users = await User.find(query);
-    res.json({
-      msg: "Get Users",
-      users,
-    });
+    res.json(users);
   } catch (error) {
     console.log(error);
     return res.status(500).json({

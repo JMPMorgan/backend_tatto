@@ -17,7 +17,8 @@ const idExists = async (id = "") => {
 };
 
 const emailExist = async (mail = "") => {
-  const exits = await User.findOne({ mail });
+  const exits = await User.findOne({ email: mail });
+  console.log(exits);
   if (exits) {
     throw new Error(`${mail} is already registered`);
   }
