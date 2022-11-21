@@ -12,6 +12,7 @@ const {
   emailExist,
   userExist,
 } = require("../helpers/db_validators");
+const { validateFileToUpload } = require("../middlewares/validatefile");
 const { inputValidation } = require("../middlewares/validateinput");
 
 const router = new Router();
@@ -32,6 +33,7 @@ router.post(
       "Password is required and the characters must be more than 6"
     ).isLength({ min: 6 }),
     check("birthday", "birthday is required").isDate(),
+    validateFileToUpload,
     inputValidation,
   ],
   postUser

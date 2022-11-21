@@ -1,3 +1,4 @@
+const { uploadFile } = require("../helpers/uploadfile");
 const Posts = require("../models/posts");
 
 const getPost = async (req, res) => {
@@ -17,8 +18,7 @@ const getPosts = async (req, res) => {
 
 const postPosts = async (req, res) => {
   const { user, description, local } = req.body;
-  //TODO : Only need implementation cloudinary
-  const img = "img";
+  const img = await uploadFile(req.files);
   const post = new Posts({ user, description, local, img });
   await post.save();
   res.json({

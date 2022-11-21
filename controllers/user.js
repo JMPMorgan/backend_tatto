@@ -1,4 +1,5 @@
 const bcryptjs = require("bcryptjs");
+const { uploadFile, deleteFile } = require("../helpers/uploadfile");
 const User = require("../models/user");
 
 const getUser = async (req, res) => {
@@ -43,6 +44,8 @@ const postUser = async (req, res) => {
       });
     }
 
+    const img = await uploadFile(req.files);
+
     const user = new User({
       name,
       email,
@@ -50,6 +53,7 @@ const postUser = async (req, res) => {
       username,
       birthday,
       lastname,
+      img,
     });
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync(password, salt);
@@ -71,6 +75,16 @@ const updateUser = async (req, res) => {
     const { name } = req.body;
     const { id } = req.params;
     const user = await User.findById(id);
+    if (user.img) {
+      const isDeleted = await deleteFile(user.img);
+      if (!isDeleted) {
+        console.log(isDeleted);
+        return res.status(500).json({
+          msg: "Server Error",
+        });
+      }
+    }
+    user.img = await uploadFile(req.files);
     user.name = name;
     await user.save();
     res.json({
