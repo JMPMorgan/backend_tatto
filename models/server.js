@@ -13,6 +13,7 @@ class Server {
     this.CATHEGORY_PATH = "/api/cathegory";
     this.CATHEGORY_LOCAL_PATH = "/api/cathegory_local";
     this.MESSAGE_PATH = "/api/message";
+    this.CONVERSATION_PATH = "/api/conversations";
     this.connectDB();
     this.middlewares();
     this.routes();
@@ -45,6 +46,7 @@ class Server {
       require("../routes/cathegory_local")
     );
     this.app.use(this.MESSAGE_PATH, require("../routes/message"));
+    this.app.use(this.CONVERSATION_PATH, require("../routes/conversation"));
   }
 
   startServer() {
