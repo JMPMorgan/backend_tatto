@@ -35,6 +35,7 @@ const login = async (req, res) => {
       password,
       email,
       token,
+      id: user._id,
     });
   } catch (error) {
     console.log(error);
