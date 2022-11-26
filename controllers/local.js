@@ -107,4 +107,5 @@ module.exports = {
   postLocal,
   updateLocal,
   deleteLocal,
+  getPostPerLocal,
 };

@@ -6,6 +6,7 @@ const {
   postLocal,
   updateLocal,
   deleteLocal,
+  getPostPerLocal,
 } = require("../controllers/local");
 const { inputValidation } = require("../middlewares/validateinput");
 const { validateFileToUpload } = require("../middlewares/validatefile");
@@ -25,5 +26,6 @@ router.post(
 );
 router.put("/:id", [], updateLocal);
 router.delete("/:id", [], deleteLocal);
+router.get("/post/:id", getPostPerLocal);
 
 module.exports = router;
