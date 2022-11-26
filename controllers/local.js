@@ -1,5 +1,9 @@
 const bcryptjs = require("bcryptjs");
+
 const Local = require("../models/local");
+const Posts = require("../models/posts");
+const { uploadFile } = require("../helpers/uploadfile");
+
 const getLocals = async (req, res) => {
   const query = { status: true };
   const locals = await Local.find(query);
@@ -39,7 +43,7 @@ const postLocal = async (req, res) => {
       });
     }
     // TODO: Need Cloudinary Implementation
-    const img = "img";
+    const img = await uploadFile(req.files);
     console.log("Todo chilo");
     const local = new Local({ name, schedule, weekdays, user, location, img });
     console.log(local);
@@ -78,6 +82,23 @@ const deleteLocal = async (req, res) => {
     olddata: localDelete,
     msg: "Local Deleted",
   });
+};
+
+const getPostPerLocal = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const posts = await Posts.find({
+      local: id,
+    });
+    return res.json({
+      posts,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server Error",
+    });
+  }
 };
 
 module.exports = {

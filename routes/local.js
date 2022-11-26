@@ -8,6 +8,7 @@ const {
   deleteLocal,
 } = require("../controllers/local");
 const { inputValidation } = require("../middlewares/validateinput");
+const { validateFileToUpload } = require("../middlewares/validatefile");
 
 const router = new Router();
 
@@ -15,7 +16,11 @@ router.get("/", getLocals);
 router.get("/:id", getLocal);
 router.post(
   "/",
-  [check("user", "User is a invalidad ID").isMongoId(), inputValidation],
+  [
+    check("user", "User is a invalidad ID").isMongoId(),
+    validateFileToUpload,
+    inputValidation,
+  ],
   postLocal
 );
 router.put("/:id", [], updateLocal);
