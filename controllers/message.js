@@ -2,7 +2,7 @@ const Message = require("../models/message");
 const Conversation = require("../models/conversation");
 
 const getConversation = async (req, res) => {
-  const { limit = 5, from = 0 } = req.query;
+  const { limit = 50, from = 0 } = req.query;
   const { id } = req.params;
   const query = { conversation: id };
   const messages = await Message.find(query).skip(from).limit(limit);
@@ -27,6 +27,7 @@ const postMessage = async (req, res) => {
         },
       ],
     });
+    console.log("Conversacion", exitsConversation);
     if (!exitsConversation) {
       const conversation = new Conversation({
         user: sender,
@@ -38,7 +39,6 @@ const postMessage = async (req, res) => {
     conversation.last_message = Date.now();*/
       console.log("Hola");
       const idConversation = await conversation.save();
-      console.log(idConversation);
       const newMessage = new Message({
         conversation: idConversation,
         sender,

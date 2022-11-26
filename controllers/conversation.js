@@ -27,8 +27,6 @@ const getConversations = async (req, res) => {
     const message = await Message.findOne({
       conversation: conversation[index]._id,
     }).sort({ creation_date: -1 });
-    console.log(message);
-    console.log(conversations[index]);
     conversations[index].message = message.message;
   }
   return res.json({
