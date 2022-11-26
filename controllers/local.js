@@ -23,10 +23,10 @@ const postLocal = async (req, res) => {
     console.log(query);
     //TODO:Pasarlo a un middleware
 
-    const exitsLocal = await Local.find({
-      location: location,
-      name: name,
+    const exitsLocal = await Local.findOne({
+      $and: [{ location }, { name }],
     });
+    console.log(exitsLocal);
     if (exitsLocal) {
       return res.status(400).json({
         msg: `Local ${name} already exits`,
