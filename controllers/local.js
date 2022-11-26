@@ -36,7 +36,7 @@ const postLocal = async (req, res) => {
         msg: `Local ${name} already exits`,
       });
     }
-    const exitsUser = await Local.findById(user).populate("user");
+    const exitsUser = await Local.findOne({ user: user });
     if (exitsUser) {
       return res.status(400).json({
         msg: `This user has registered a local`,
@@ -101,6 +101,19 @@ const getPostPerLocal = async (req, res) => {
   }
 };
 
+const getLocalPerUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const local = await Local.findOne({ user: id });
+    return res.json({ local });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server Error",
+    });
+  }
+};
+
 module.exports = {
   getLocal,
   getLocals,
@@ -108,4 +121,5 @@ module.exports = {
   updateLocal,
   deleteLocal,
   getPostPerLocal,
+  getLocalPerUser,
 };

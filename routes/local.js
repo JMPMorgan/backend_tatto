@@ -7,6 +7,7 @@ const {
   updateLocal,
   deleteLocal,
   getPostPerLocal,
+  getLocalPerUser,
 } = require("../controllers/local");
 const { inputValidation } = require("../middlewares/validateinput");
 const { validateFileToUpload } = require("../middlewares/validatefile");
@@ -15,6 +16,7 @@ const router = new Router();
 
 router.get("/", getLocals);
 router.get("/:id", getLocal);
+router.get("/user/:id", getLocalPerUser);
 router.post(
   "/",
   [
