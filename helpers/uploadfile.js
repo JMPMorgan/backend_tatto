@@ -37,6 +37,34 @@ const uploadFile = (files, validExtentions = ["jpg", "png", "jpeg", "gif"]) => {
   });
 };
 
+const uploadFileInBase64 = (
+  image,
+  validExtentions = ["jpg", "png", "jpeg", "gif"]
+) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //const tmpNameFile = uuidv4() + "." + extensionFile;
+      //return res.json({ msg: "hola" });
+
+      //const uploadPath = path.join(__dirname, "../uploads/", tmpNameFile);
+
+      /*file.mv(uploadPath, function (err) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(uploadPath);
+        });*/
+
+      const { secure_url } = await cloudinary.uploader.upload(image);
+      resolve(secure_url);
+    } catch (error) {
+      console.log("hola");
+      console.log(error);
+      reject(error);
+    }
+  });
+};
+
 const deleteFile = (
   sourceImg,
   validExtentions = ["jpg", "png", "jpeg", "gif"]
@@ -66,5 +94,6 @@ const updateFile=async (req,res)=>{
 
 module.exports = {
   uploadFile,
+  uploadFileInBase64,
   deleteFile,
 };

@@ -2,7 +2,7 @@ const bcryptjs = require("bcryptjs");
 
 const Local = require("../models/local");
 const Posts = require("../models/posts");
-const { uploadFile } = require("../helpers/uploadfile");
+const { uploadFile, uploadFileInBase64 } = require("../helpers/uploadfile");
 
 const getLocals = async (req, res) => {
   const query = { status: true };
@@ -22,30 +22,39 @@ const getLocal = async (req, res) => {
 
 const postLocal = async (req, res) => {
   try {
-    const { name, schedule, weekdays, user, location } = req.body;
-    const query = { name: name, location: location };
-    console.log(query);
+    const { name, schedule, weekdays, user, location, img } = req.body;
     //TODO:Pasarlo a un middleware
 
     const exitsLocal = await Local.findOne({
       $and: [{ location }, { name }],
     });
-    console.log(exitsLocal);
     if (exitsLocal) {
+      console.log("Adios");
       return res.status(400).json({
         msg: `Local ${name} already exits`,
       });
     }
     const exitsUser = await Local.findOne({ user: user });
     if (exitsUser) {
+      console.log("Hola");
       return res.status(400).json({
         msg: `This user has registered a local`,
       });
     }
-    // TODO: Need Cloudinary Implementation
-    const img = await uploadFile(req.files);
+    const file = req.files !== undefined ? req.files.file : img;
+    const imgSave =
+      req.files !== undefined
+        ? await uploadFile(file)
+        : await uploadFileInBase64(file);
     console.log("Todo chilo");
-    const local = new Local({ name, schedule, weekdays, user, location, img });
+    const local = new Local({
+      name,
+      schedule,
+      weekdays,
+      user,
+      location,
+      img: imgSave,
+    });
     console.log(local);
     await local.save();
     return res.json({

@@ -1,5 +1,9 @@
 const bcryptjs = require("bcryptjs");
-const { uploadFile, deleteFile } = require("../helpers/uploadfile");
+const {
+  uploadFile,
+  deleteFile,
+  uploadFileInBase64,
+} = require("../helpers/uploadfile");
 const User = require("../models/user");
 
 const getUser = async (req, res) => {
@@ -72,7 +76,7 @@ const postUser = async (req, res) => {
 };
 const updateUser = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, img } = req.body;
     const { id } = req.params;
     const user = await User.findById(id);
     if (user.img) {
@@ -84,10 +88,15 @@ const updateUser = async (req, res) => {
         });
       }
     }
-    user.img = await uploadFile(req.files);
+    const file = req.files !== undefined ? req.files.file : img;
+    user.img =
+      req.files !== undefined
+        ? await uploadFile(file)
+        : await uploadFileInBase64(file);
     user.name = name;
+    console.log(user);
     await user.save();
-    res.json({
+    return res.json({
       msg: "Update User",
     });
   } catch (error) {
