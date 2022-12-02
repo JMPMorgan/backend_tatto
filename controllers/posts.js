@@ -1,4 +1,4 @@
-const { uploadFile } = require("../helpers/uploadfile");
+const { uploadFile, uploadFileInBase64 } = require("../helpers/uploadfile");
 const Posts = require("../models/posts");
 
 const getPost = async (req, res) => {
@@ -17,9 +17,14 @@ const getPosts = async (req, res) => {
 };
 
 const postPosts = async (req, res) => {
-  const { user, description, local } = req.body;
-  const img = await uploadFile(req.files);
-  const post = new Posts({ user, description, local, img });
+  const { user, description, local, img } = req.body;
+  const file = req.files !== undefined ? req.files.file : img;
+  const imgPost =
+    req.files !== undefined
+      ? await uploadFile(file)
+      : await uploadFileInBase64(file);
+  //const img = await uploadFile(req.files);
+  const post = new Posts({ user, description, local, img: imgPost });
   await post.save();
   res.json({
     msg: "Post Posts",

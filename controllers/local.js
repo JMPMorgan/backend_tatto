@@ -24,7 +24,7 @@ const postLocal = async (req, res) => {
   try {
     const { name, schedule, weekdays, user, location, img } = req.body;
     //TODO:Pasarlo a un middleware
-
+    console.log("Hola");
     const exitsLocal = await Local.findOne({
       $and: [{ location }, { name }],
     });
@@ -99,6 +99,7 @@ const getPostPerLocal = async (req, res) => {
     const posts = await Posts.find({
       local: id,
     });
+    console.log(posts);
     return res.json({
       posts,
     });
@@ -111,9 +112,13 @@ const getPostPerLocal = async (req, res) => {
 };
 
 const getLocalPerUser = async (req, res) => {
-  const { id } = req.params;
   try {
-    const local = await Local.findOne({ user: id });
+    const { id } = req.params;
+    console.log(id);
+    console.log("HOLAAAAAAAAAAAAAA");
+    const newId = "6382caf690f4e58d3bd15601";
+    const local = await Local.findOne({ user: newId });
+    console.log(local);
     return res.json({ local });
   } catch (error) {
     console.log(error);
