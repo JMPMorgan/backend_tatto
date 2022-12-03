@@ -33,7 +33,8 @@ const getUsers = async (req, res) => {
 };
 const postUser = async (req, res) => {
   try {
-    const { name, email, password, lastname, username, birthday } = req.body;
+    const { name, email, password, lastname, username, birthday, img } =
+      req.body;
     const exitsEmail = await User.findOne({ email });
     console.log(exitsEmail);
     if (exitsEmail) {
@@ -47,8 +48,11 @@ const postUser = async (req, res) => {
         msg: `Username: ${username} already exits`,
       });
     }
-
-    const img = await uploadFile(req.files);
+    const file = req.files !== undefined ? req.files.file : img;
+    const imgUser =
+      req.files !== undefined
+        ? await uploadFile(file)
+        : await uploadFileInBase64(file);
 
     const user = new User({
       name,
@@ -57,7 +61,7 @@ const postUser = async (req, res) => {
       username,
       birthday,
       lastname,
-      img,
+      img: imgUser,
     });
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync(password, salt);

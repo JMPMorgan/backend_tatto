@@ -7,6 +7,7 @@ const { uploadFile, uploadFileInBase64 } = require("../helpers/uploadfile");
 const getLocals = async (req, res) => {
   const query = { status: true };
   const locals = await Local.find(query);
+  console.log(locals);
   res.json({
     locals,
   });
