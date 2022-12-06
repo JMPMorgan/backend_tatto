@@ -5,10 +5,12 @@ const getConversation = async (req, res) => {
   const { limit = 50, from = 0 } = req.query;
   const { id } = req.params;
   const query = { conversation: id };
-  const messages = await Message.find(query).skip(from).limit(limit);
-  res.json({
-    messages,
-  });
+  const messages = await Message.find(query)
+    .skip(from)
+    .limit(limit)
+    .populate("sender")
+    .populate("receiver");
+  res.json(messages);
 };
 
 const postMessage = async (req, res) => {
