@@ -15,10 +15,10 @@ const getLocals = async (req, res) => {
 
 const getLocal = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const local = await Local.findById(id);
-  res.json({
-    local,
-  });
+  console.log("local", local);
+  res.json(local);
 };
 
 const postLocal = async (req, res) => {

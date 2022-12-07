@@ -14,26 +14,26 @@ const getConversation = async (req, res) => {
 };
 
 const postMessage = async (req, res) => {
-  const { id, sender, receiver, message } = req.body;
+  const { id, message, idsender, idreceiver, conversation } = req.body;
   console.log(req.body);
   try {
     const exitsConversation = await Conversation.findOne({
       $or: [
         {
-          user: sender,
-          artist: receiver,
+          user: idsender,
+          artist: idreceiver,
         },
         {
-          artist: sender,
-          user: receiver,
+          artist: idsender,
+          user: idreceiver,
         },
       ],
     });
     console.log("Conversacion", exitsConversation);
     if (!exitsConversation) {
       const conversation = new Conversation({
-        user: sender,
-        artist: receiver,
+        user: idsender,
+        artist: idreceiver,
         last_message: Date.now(),
       });
       /*conversation.user = sender;
@@ -43,8 +43,8 @@ const postMessage = async (req, res) => {
       const idConversation = await conversation.save();
       const newMessage = new Message({
         conversation: idConversation,
-        sender,
-        receiver,
+        sender: idsender,
+        receiver: idreceiver,
         message,
       });
       await newMessage.save();
@@ -52,11 +52,11 @@ const postMessage = async (req, res) => {
         msg: `The Conversation has been created`,
       });
     } else {
-      console.log("Ahora andamios aqui");
+      const idconversation = exitsConversation.id;
       const newMessage = new Message({
-        conversation: id,
-        sender,
-        receiver,
+        conversation: idconversation,
+        sender: idsender,
+        receiver: idreceiver,
         message,
       });
       await newMessage.save();
