@@ -14,11 +14,18 @@ const getLocals = async (req, res) => {
 };
 
 const getLocal = async (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  const local = await Local.findById(id);
-  console.log("local", local);
-  res.json(local);
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const local = await Local.findById(id);
+    console.log("local", local);
+    res.json(local);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server Error",
+    });
+  }
 };
 
 const postLocal = async (req, res) => {
@@ -115,12 +122,9 @@ const getPostPerLocal = async (req, res) => {
 const getLocalPerUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-    console.log("HOLAAAAAAAAAAAAAA");
-    const newId = "6382caf690f4e58d3bd15601";
-    const local = await Local.findOne({ user: newId });
+    const local = await Local.findOne({ user: id });
     console.log(local);
-    return res.json({ local });
+    return res.json(local);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
