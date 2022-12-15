@@ -48,9 +48,7 @@ const postMessage = async (req, res) => {
         message,
       });
       await newMessage.save();
-      return res.status(201).json({
-        msg: `The Conversation has been created`,
-      });
+      return res.status(201).json(`The Conversation has been created`);
     } else {
       const idconversation = exitsConversation.id;
       const newMessage = new Message({
@@ -60,9 +58,7 @@ const postMessage = async (req, res) => {
         message,
       });
       await newMessage.save();
-      return res.status(200).json({
-        msg: "Message Saved",
-      });
+      return res.status(200).json("Message Saved");
     }
   } catch (error) {
     console.log(error);
