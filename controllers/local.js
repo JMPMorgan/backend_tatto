@@ -5,12 +5,21 @@ const Posts = require("../models/posts");
 const { uploadFile, uploadFileInBase64 } = require("../helpers/uploadfile");
 
 const getLocals = async (req, res) => {
-  const query = { status: true };
-  const locals = await Local.find(query);
-  console.log(locals);
-  res.json({
-    locals,
-  });
+  try {
+    const query = { status: true };
+    const locals = await Local.find(query);
+    console.log(locals);
+    return res.json({
+      success: true,
+      msg: "Locales Obtenidos",
+      locals,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      msg: "Server Error",
+    });
+  }
 };
 
 const getLocal = async (req, res) => {
@@ -19,10 +28,15 @@ const getLocal = async (req, res) => {
     console.log(id);
     const local = await Local.findById(id);
     console.log("local", local);
-    res.json(local);
+    return res.json({
+      success: true,
+      msg: "Local Obtenido",
+      local,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -39,6 +53,7 @@ const postLocal = async (req, res) => {
     if (exitsLocal) {
       console.log("Adios");
       return res.status(400).json({
+        success: false,
         msg: `Local ${name} already exits`,
       });
     }
@@ -46,6 +61,7 @@ const postLocal = async (req, res) => {
     if (exitsUser) {
       console.log("Hola");
       return res.status(400).json({
+        success: false,
         msg: `This user has registered a local`,
       });
     }
@@ -66,37 +82,49 @@ const postLocal = async (req, res) => {
     console.log(local);
     await local.save();
     return res.json({
+      success: true,
+      local,
       msg: "Local Created",
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
 };
 
 const updateLocal = async (req, res) => {
-  const { id } = req.params;
-  const { name, location, ...data } = req.body;
-  //
-  const local = await Local.findByIdAndUpdate(id, data, { new: true });
+  try {
+    const { id } = req.params;
+    const { name, location, ...data } = req.body;
+    //
+    const local = await Local.findByIdAndUpdate(id, data, { new: true });
 
-  res.json({
-    olddatalocal: local,
-    msg: "Update Local",
-  });
+    return res.json({
+      success: true,
+      local,
+      msg: "Update Local",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      msg: "Server Error",
+    });
+  }
 };
 
 const deleteLocal = async (req, res) => {
   const { id } = req.params;
-  const localDelete = await Local.findByIdAndUpdate(
+  const local = await Local.findByIdAndUpdate(
     id,
     { status: false },
     { new: true }
   );
   res.json({
-    olddata: localDelete,
+    local,
+    success: true,
     msg: "Local Deleted",
   });
 };
@@ -109,11 +137,14 @@ const getPostPerLocal = async (req, res) => {
     });
     console.log(posts);
     return res.json({
+      success: true,
+      msg: "Post Obtenidos Con Exito",
       posts,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -124,11 +155,16 @@ const getLocalPerUser = async (req, res) => {
     const { id } = req.params;
     const local = await Local.findOne({ user: id });
     console.log(local);
-    return res.json(local);
+    return res.json({
+      success: true,
+      local,
+      msg: "Local Obtenido",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       msg: "Server Error",
+      success: false,
     });
   }
 };

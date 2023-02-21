@@ -10,10 +10,15 @@ const getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    res.json(user);
+    res.json({
+      success: true,
+      msg: "Usuario Obtenido Correctamente",
+      user,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -23,10 +28,15 @@ const getUsers = async (req, res) => {
   try {
     const query = { status: true };
     const users = await User.find(query);
-    res.json(users);
+    res.json({
+      users,
+      success: true,
+      msg: "Usuarios Obtenidos Correctamente",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -39,12 +49,14 @@ const postUser = async (req, res) => {
     console.log(exitsEmail);
     if (exitsEmail) {
       return res.status(400).json({
+        success: false,
         msg: `Email: ${email} already exits`,
       });
     }
     const exitsUsername = await User.findOne({ username });
     if (exitsUsername) {
       return res.status(400).json({
+        success: false,
         msg: `Username: ${username} already exits`,
       });
     }
@@ -68,12 +80,14 @@ const postUser = async (req, res) => {
     await user.save();
 
     res.json({
+      success: true,
       msg: "Post User",
       user,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -88,6 +102,7 @@ const updateUser = async (req, res) => {
       if (!isDeleted) {
         console.log(isDeleted);
         return res.status(500).json({
+          success: false,
           msg: "Server Error",
         });
       }
@@ -101,11 +116,13 @@ const updateUser = async (req, res) => {
     console.log(user);
     await user.save();
     return res.json({
+      success: true,
       msg: "Update User",
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
@@ -117,11 +134,13 @@ const deleteUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(id, { status: false });
     console.log("Aqui");
     res.json({
+      success: true,
       msg: "Delete User",
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
