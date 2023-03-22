@@ -32,7 +32,7 @@ router.post(
       "password",
       "Password is required and the characters must be more than 6"
     ).isLength({ min: 6 }),
-    check("birthday", "birthday is required").isDate(),
+    check("birthday", "birthday is required").isDate({ format: "dd/MM/YYYY" }),
     validateFileToUpload,
     inputValidation,
   ],

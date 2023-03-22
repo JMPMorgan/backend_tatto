@@ -22,6 +22,7 @@ const login = async (req, res) => {
         msg: `User dont exits`,
       });
     }
+
     const validPassword = bcryptjs.compareSync(password, user.password);
     console.log(validPassword);
     if (!validPassword) {
@@ -29,13 +30,11 @@ const login = async (req, res) => {
         msg: `Username/E-mail or Password is Incorrect`,
       });
     }
-    const token = await generateJWT(user.id);
+    // const token = await generateJWT(user.id);
     return res.status(200).json({
       msg: "Login",
       password,
-      email,
-      token,
-      id: user._id,
+      user,
     });
   } catch (error) {
     console.log(error);
