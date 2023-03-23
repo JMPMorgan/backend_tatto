@@ -29,7 +29,11 @@ const getConversations = async (req, res) => {
     }).sort({ creation_date: -1 });
     conversations[index].message = message.message;
   }
-  return res.json(conversations);
+  return res.json({
+    msg: "Conversaciones Obtenidas",
+    success: true,
+    conversations,
+  });
 };
 
 module.exports = {

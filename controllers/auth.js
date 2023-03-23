@@ -11,8 +11,8 @@ const login = async (req, res) => {
     } else {
       user = await User.findOne({ email });
     }
-    console.log(user);
     if (!user) {
+      console.log("Hola");
       return res.status(400).json({
         msg: `Username/E-mail or Password is Incorrect`,
       });
@@ -24,7 +24,6 @@ const login = async (req, res) => {
     }
 
     const validPassword = bcryptjs.compareSync(password, user.password);
-    console.log(validPassword);
     if (!validPassword) {
       return res.status(400).json({
         msg: `Username/E-mail or Password is Incorrect`,
@@ -33,7 +32,6 @@ const login = async (req, res) => {
     // const token = await generateJWT(user.id);
     return res.status(200).json({
       msg: "Login",
-      password,
       user,
     });
   } catch (error) {
