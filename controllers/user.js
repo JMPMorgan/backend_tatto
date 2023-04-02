@@ -4,12 +4,16 @@ const {
   deleteFile,
   uploadFileInBase64,
 } = require("../helpers/uploadfile");
+const Local = require("../models/local");
 const User = require("../models/user");
 
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const onlyUser = await User.findById(id);
+    const local = await Local.findOne({ user: id });
+    const hasLocal = local ? true : false;
+    const user = { ...onlyUser._doc, hasLocal };
     res.json({
       success: true,
       msg: "Usuario Obtenido Correctamente",
