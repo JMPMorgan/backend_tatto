@@ -2,7 +2,11 @@ const bcryptjs = require("bcryptjs");
 
 const Local = require("../models/local");
 const Posts = require("../models/posts");
-const { uploadFile, uploadFileInBase64 } = require("../helpers/uploadfile");
+const {
+  uploadFile,
+  uploadFileInBase64,
+  deleteFile,
+} = require("../helpers/uploadfile");
 
 const getLocals = async (req, res) => {
   try {
@@ -98,15 +102,40 @@ const postLocal = async (req, res) => {
 const updateLocal = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, location, ...data } = req.body;
-    //
-    const local = await Local.findByIdAndUpdate(id, data, { new: true });
+    const { name, ...data } = req.body;
+    // console.log(data);
+    const local = await Local.findById(id);
+    if (local.img !== data.img) {
+      const isDeleted = await deleteFile(local.img);
+      console.log(isDeleted);
+      if (!isDeleted) {
+        return res.status(500).json({
+          success: false,
+          msg: "Server Error",
+        });
+      }
+      const imgToUpload = data.img;
+      data.img = await uploadFileInBase64(imgToUpload);
+      local.img = data.img;
+    }
+    local.schedule = data.schedule;
+    local.weekdays = data.weekdays;
+    local.location = data.location;
+    await local.save();
 
     return res.json({
       success: true,
       local,
       msg: "Update Local",
     });
+
+    // const local = await Local.findByIdAndUpdate(id, data, { new: true });
+
+    // return res.json({
+    //   success: true,
+    //   local,
+    //   msg: "Update Local",
+    // });
   } catch (error) {
     return res.status(500).json({
       success: false,
