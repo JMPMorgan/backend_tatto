@@ -98,10 +98,10 @@ const postUser = async (req, res) => {
 };
 const updateUser = async (req, res) => {
   try {
-    const { name, img } = req.body;
+    const { name, lastname, img } = req.body;
     const { id } = req.params;
     const user = await User.findById(id);
-    if (user.img) {
+    if (user.img !== img) {
       const isDeleted = await deleteFile(user.img);
       if (!isDeleted) {
         console.log(isDeleted);
@@ -110,13 +110,15 @@ const updateUser = async (req, res) => {
           msg: "Server Error",
         });
       }
+      const file = req.files !== undefined ? req.files.file : img;
+      user.img =
+        req.files !== undefined
+          ? await uploadFile(file)
+          : await uploadFileInBase64(file);
     }
-    const file = req.files !== undefined ? req.files.file : img;
-    user.img =
-      req.files !== undefined
-        ? await uploadFile(file)
-        : await uploadFileInBase64(file);
+
     user.name = name;
+    user.lastname = lastname;
     console.log(user);
     await user.save();
     return res.json({
