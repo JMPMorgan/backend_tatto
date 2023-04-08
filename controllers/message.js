@@ -10,7 +10,10 @@ const getConversation = async (req, res) => {
     .limit(limit)
     .populate("sender")
     .populate("receiver");
-  res.json(messages);
+  res.json({
+    msg: "Conversations",
+    messages,
+  });
 };
 
 const postMessage = async (req, res) => {
@@ -48,7 +51,9 @@ const postMessage = async (req, res) => {
         message,
       });
       await newMessage.save();
-      return res.status(201).json(`The Conversation has been created`);
+      return res.status(200).json({
+        msg: `The Conversation has been created`,
+      });
     } else {
       const idconversation = exitsConversation.id;
       const newMessage = new Message({
@@ -58,7 +63,9 @@ const postMessage = async (req, res) => {
         message,
       });
       await newMessage.save();
-      return res.status(200).json("Message Saved");
+      return res.status(200).json({
+        msg: "Message Saved",
+      });
     }
   } catch (error) {
     console.log(error);

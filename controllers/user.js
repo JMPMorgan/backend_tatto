@@ -69,7 +69,6 @@ const postUser = async (req, res) => {
       req.files !== undefined
         ? await uploadFile(file)
         : await uploadFileInBase64(file);
-
     const user = new User({
       name,
       email,
@@ -82,7 +81,7 @@ const postUser = async (req, res) => {
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync(password, salt);
     await user.save();
-
+    console.log("Hola");
     res.json({
       success: true,
       msg: "Post User",
