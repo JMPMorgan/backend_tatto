@@ -50,7 +50,6 @@ const postUser = async (req, res) => {
     const { name, email, password, lastname, username, birthday, img } =
       req.body;
     const exitsEmail = await User.findOne({ email });
-    console.log(exitsEmail);
     if (exitsEmail) {
       return res.status(400).json({
         success: false,
@@ -81,7 +80,6 @@ const postUser = async (req, res) => {
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync(password, salt);
     await user.save();
-    console.log("Hola");
     res.json({
       success: true,
       msg: "Post User",
@@ -103,7 +101,6 @@ const updateUser = async (req, res) => {
     if (user.img !== img) {
       const isDeleted = await deleteFile(user.img);
       if (!isDeleted) {
-        console.log(isDeleted);
         return res.status(500).json({
           success: false,
           msg: "Server Error",
@@ -118,7 +115,6 @@ const updateUser = async (req, res) => {
 
     user.name = name;
     user.lastname = lastname;
-    console.log(user);
     await user.save();
     return res.json({
       success: true,
@@ -134,10 +130,8 @@ const updateUser = async (req, res) => {
 };
 const deleteUser = async (req, res) => {
   try {
-    console.log("Hola");
     const { id } = req.params;
     const user = await User.findByIdAndUpdate(id, { status: false });
-    console.log("Aqui");
     res.json({
       success: true,
       msg: "Delete User",
