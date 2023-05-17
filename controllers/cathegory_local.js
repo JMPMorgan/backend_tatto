@@ -7,7 +7,6 @@ const postRelationship = async (req, res) => {
     cathegory: id_cathegory,
     local: id_local,
   });
-  console.log(exitsCathegory);
   if (exitsCathegory) {
     return res.status(400).json({
       msg: `Already exits a Relationship`,

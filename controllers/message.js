@@ -18,7 +18,6 @@ const getConversation = async (req, res) => {
 
 const postMessage = async (req, res) => {
   const { id, message, idsender, idreceiver, conversation } = req.body;
-  console.log(req.body);
   try {
     const exitsConversation = await Conversation.findOne({
       $or: [
@@ -32,7 +31,6 @@ const postMessage = async (req, res) => {
         },
       ],
     });
-    console.log("Conversacion", exitsConversation);
     if (!exitsConversation) {
       const conversation = new Conversation({
         user: idsender,
@@ -42,7 +40,6 @@ const postMessage = async (req, res) => {
       /*conversation.user = sender;
     conversation.artist = receiver;
     conversation.last_message = Date.now();*/
-      console.log("Hola");
       const idConversation = await conversation.save();
       const newMessage = new Message({
         conversation: idConversation,

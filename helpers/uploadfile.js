@@ -12,7 +12,6 @@ const uploadFile = (files, validExtentions = ["jpg", "png", "jpeg", "gif"]) => {
       if (!validExtentions.includes(extensionFile)) {
         return reject(`Invalid Extension. Valid Extension ${validExtentions}`);
       }
-      console.log(fileWithExtension);
 
       //const tmpNameFile = uuidv4() + "." + extensionFile;
       //return res.json({ msg: "hola" });
@@ -25,13 +24,10 @@ const uploadFile = (files, validExtentions = ["jpg", "png", "jpeg", "gif"]) => {
           }
           resolve(uploadPath);
         });*/
-      console.log(file);
       const { tempFilePath } = file;
       const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
       resolve(secure_url);
     } catch (error) {
-      console.log("hola");
-      console.log(error);
       reject(error);
     }
   });
@@ -58,7 +54,6 @@ const uploadFileInBase64 = (
       const { secure_url } = await cloudinary.uploader.upload(image);
       resolve(secure_url);
     } catch (error) {
-      console.log("hola");
       console.log(error);
       reject(error);
     }

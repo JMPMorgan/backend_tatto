@@ -27,7 +27,6 @@ const getCathegories = async (req, res) => {
 const postCathegory = async (req, res) => {
   const { name } = req.body;
   const exitsCathegory = await Cathegory.findOne({ name });
-  console.log(exitsCathegory);
   if (exitsCathegory !== null) {
     return res.status(400).json({
       msg: `Cathegory ${name} already exits`,
@@ -70,7 +69,6 @@ const updateCathegory = async (req, res) => {
   }
 
   const exitsCathegory = await Cathegory.findOne({ name });
-  console.log(exitsCathegory);
   if (exitsCathegory !== null) {
     return res.status(400).json({
       msg: `Cathegory ${name} already exits`,

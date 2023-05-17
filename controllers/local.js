@@ -12,7 +12,6 @@ const getLocals = async (req, res) => {
   try {
     const query = { status: true };
     const locals = await Local.find(query);
-    console.log(locals);
     return res.json({
       success: true,
       msg: "Locales Obtenidos",
@@ -29,9 +28,7 @@ const getLocals = async (req, res) => {
 const getLocal = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const local = await Local.findById(id);
-    console.log("local", local);
     return res.json({
       success: true,
       msg: "Local Obtenido",
@@ -50,12 +47,10 @@ const postLocal = async (req, res) => {
   try {
     const { name, schedule, weekdays, user, location, img } = req.body;
     //TODO:Pasarlo a un middleware
-    console.log("Hola");
     const exitsLocal = await Local.findOne({
       $and: [{ location }, { name }],
     });
     if (exitsLocal) {
-      console.log("Adios");
       return res.status(400).json({
         success: false,
         msg: `Local ${name} already exits`,
@@ -63,7 +58,6 @@ const postLocal = async (req, res) => {
     }
     const exitsUser = await Local.findOne({ user: user });
     if (exitsUser) {
-      console.log("Hola");
       return res.status(400).json({
         success: false,
         msg: `This user has registered a local`,
@@ -74,7 +68,6 @@ const postLocal = async (req, res) => {
       req.files !== undefined
         ? await uploadFile(file)
         : await uploadFileInBase64(file);
-    console.log("Todo chilo");
     const local = new Local({
       name,
       schedule,
@@ -83,7 +76,6 @@ const postLocal = async (req, res) => {
       location,
       img: imgSave,
     });
-    console.log(local);
     await local.save();
     return res.json({
       success: true,
@@ -103,11 +95,9 @@ const updateLocal = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, ...data } = req.body;
-    // console.log(data);
     const local = await Local.findById(id);
     if (local.img !== data.img) {
       const isDeleted = await deleteFile(local.img);
-      console.log(isDeleted);
       if (!isDeleted) {
         return res.status(500).json({
           success: false,
@@ -164,7 +154,6 @@ const getPostPerLocal = async (req, res) => {
     const posts = await Posts.find({
       local: id,
     });
-    console.log(posts);
     return res.json({
       success: true,
       msg: "Post Obtenidos Con Exito",
@@ -183,7 +172,6 @@ const getLocalPerUser = async (req, res) => {
   try {
     const { id } = req.params;
     const local = await Local.findOne({ user: id });
-    console.log(local);
     return res.json({
       success: true,
       local,

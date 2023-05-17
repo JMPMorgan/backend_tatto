@@ -12,7 +12,6 @@ const login = async (req, res) => {
       user = await User.findOne({ email });
     }
     if (!user) {
-      console.log("Hola");
       return res.status(400).json({
         msg: `Username/E-mail or Password is Incorrect`,
       });

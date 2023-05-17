@@ -14,7 +14,6 @@ const generateJWT = (uid = "") => {
           console.log(err);
           reject("No JWT");
         } else {
-          console.log(token);
           resolve(token);
         }
       }
