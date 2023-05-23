@@ -11,14 +11,15 @@ const getConversation = async (req, res) => {
     .populate("sender")
     .populate("receiver");
   res.json({
+    success: true,
     msg: "Conversations",
     messages,
   });
 };
 
 const postMessage = async (req, res) => {
-  const { id, message, idsender, idreceiver, conversation } = req.body;
   try {
+    const { id, message, idsender, idreceiver, conversation } = req.body;
     const exitsConversation = await Conversation.findOne({
       $or: [
         {
@@ -49,6 +50,7 @@ const postMessage = async (req, res) => {
       });
       await newMessage.save();
       return res.status(200).json({
+        success: true,
         msg: `The Conversation has been created`,
       });
     } else {
@@ -61,12 +63,14 @@ const postMessage = async (req, res) => {
       });
       await newMessage.save();
       return res.status(200).json({
+        success: true,
         msg: "Message Saved",
       });
     }
   } catch (error) {
     console.log(error);
     return res.status(500).json({
+      success: false,
       msg: "Server Error",
     });
   }
