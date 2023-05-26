@@ -2,21 +2,28 @@ const Message = require("../models/message");
 const Conversation = require("../models/conversation");
 
 const getConversation = async (req, res) => {
-  const { limit = 50, from = 0 } = req.query;
-  const { id } = req.params;
-  const query = { conversation: id };
-  const messages = await Message.find(query)
-    .skip(from)
-    .limit(limit)
-    .populate("sender")
-    .populate("receiver");
-  res.json({
-    success: true,
-    msg: "Conversations",
-    messages,
-  });
+  try {
+    const { limit = 50, from = 0 } = req.query;
+    const { id } = req.params;
+    const query = { conversation: id };
+    const messages = await Message.find(query)
+      .skip(from)
+      .limit(limit)
+      .populate("sender")
+      .populate("receiver");
+    return res.json({
+      success: true,
+      msg: "Conversations",
+      messages,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      msg: "Server Error.",
+    });
+  }
 };
-
 const postMessage = async (req, res) => {
   try {
     const { id, message, idsender, idreceiver, conversation } = req.body;
