@@ -103,7 +103,7 @@ const updateUser = async (req, res) => {
       if (!isDeleted) {
         return res.status(500).json({
           success: false,
-          msg: "Server Error",
+          msg: "Server Error 2",
         });
       }
       const file = req.files !== undefined ? req.files.file : img;
